@@ -1,0 +1,46 @@
+name: Artifacts
+on: push
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04
+    name: Artifacts
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install client
+        run: |
+          cd client
+          npm install
+
+      - name: Install server
+        run: |
+          cd service
+          npm install
+          cp .env.sample .env
+
+      - uses: cypress-io/github-action@v6
+        with:
+          working-directory: client
+          wait-on: 'http://localhost:5173, http://localhost:5000/api/v1'
+          wait-on-timeout: 30
+          browser: chrome
+          start: |
+            npm run dev
+            npm run server
+
+      # after the test run completes store videos and any screenshots
+      - uses: actions/upload-artifact@v3
+        # add the line below to store screenshots only on failures
+        # if: failure()
+        with:
+          name: cypress-screenshots
+          path: client/cypress/screenshots
+          if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
+        
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: client/cypress/videos
+          if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`

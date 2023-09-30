@@ -1,0 +1,40 @@
+name: Node Continuous Integration
+
+on:
+  pull_request:
+    branches: [ main ]
+  create:
+
+jobs:
+  # Build job
+  build:
+    # <Not provided for brevity>
+    # At a minimum this job should upload artifacts using actions/upload-pages-artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Get repository name
+        id: repo-name
+        uses: MariachiBear/get-repo-name-action@v1.1.0
+        with:
+          with-owner: 'false'
+          string-case: 'lowercase'
+
+      - name: Install and build
+        env:
+          REPO_NAME: ${{ steps.repo-name.outputs.repository-name }}
+        run: |
+          cd client
+          npm install
+          npm run build
+
+      # Publish the site
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: client/dist

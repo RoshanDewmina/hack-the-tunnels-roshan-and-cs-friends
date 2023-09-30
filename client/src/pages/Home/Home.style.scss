@@ -1,0 +1,10 @@
+.home-page {
+  &__title {
+    color: red;
+  }
+
+  &__products {
+    display: flex;
+    flex-direction: column;
+  }
+}
