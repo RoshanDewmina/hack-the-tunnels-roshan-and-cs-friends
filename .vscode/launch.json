@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Client",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/client",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "preLaunchTask": "Install Client Dependencies",
+            "outFiles": [
+                "${workspaceFolder}/client/out/**/*.js"
+            ]
+        },
+        {
+            "name": "Launch Service",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/service",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "preLaunchTask": "Seed Service Database",
+            "outFiles": [
+                "${workspaceFolder}/service/out/**/*.js"
+            ]
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch Client and Service Together",
+            "configurations": ["Launch Client", "Launch Service"]
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Install Client Dependencies",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "install"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/client"
+            }
+        },
+        {
+            "label": "Install Service Dependencies",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "install"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/service"
+            }
+        },
+        {
+            "label": "Seed Service Database",
+            "type": "shell",
+            "command": "npx",
+            "args": [
+                "prisma",
+                "db",
+                "seed"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/service"
+            },
+            "dependsOn": "Install Service Dependencies"
+        }
+    ]
+}
